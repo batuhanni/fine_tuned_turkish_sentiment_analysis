@@ -1,0 +1,3 @@
+.venv
+.pytorch_finetuned_model
+.dataset.csv
