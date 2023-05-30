@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sentiment Analysis API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+    }
+    form {
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 50px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    p {
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button[type="submit"],
+    .choice-button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .choice-button:not(:last-child) {
+      margin-right: 10px;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      font-size: x-large;
+      text-align: center;
+    }
+    #feedback_response {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      font-size: large;
+      text-align: center;
+    }
+    #update_response {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      font-size: large;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sentiment Analysis API</h1>
+  <form method="post">
+    {% csrf_token %}
+    <p>Type in a sentence to see its sentiment analysis:</p>
+    <input type="text" name="sentence">
+    <button type="submit">Predict</button>
+  </form>
+  {% if result %}
+    <div id="result">{{ result }}</div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <p>What is correct sentiment?</p>
+    <input type="submit" name="feedback" value="Positive" class="choice-button"></input>
+    <input type="submit" name="feedback" value="Negative" class="choice-button"></input>
+  </form>
+  {% if feedback_response %}
+    <div id="feedback_response">{{ feedback_response }}</div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <p>Save Updated Model</p>
+    <input type="submit" name="update" value="SAVE" class="choice-button"></input>
+  </form>
+  {% if update_response %}
+    <div id="update_response">{{ update_response }}</div>
+  {% endif %}
+</body>
+</html>

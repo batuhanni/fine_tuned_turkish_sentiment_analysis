@@ -10,7 +10,7 @@ from tqdm.auto import tqdm
 import evaluate
 
 #%%
-df = pd.read_csv(f'dataset.csv')
+df = pd.read_csv(f'.dataset.csv')
 df.label = df.label.apply(lambda x: 1 if x == "positive" else 0)
 df = df[:29760].sample(frac=1).reset_index(drop=True)
 
@@ -32,11 +32,11 @@ tokenized_datasets = tokenized_datasets.remove_columns(["text"])
 tokenized_datasets = tokenized_datasets.rename_column("label", "labels")
 tokenized_datasets.set_format("torch")
 
-train_dataloader = DataLoader(tokenized_datasets['train'], shuffle=True, batch_size=8)
-eval_dataloader = DataLoader(tokenized_datasets['test'], batch_size=8)
+train_dataloader = DataLoader(tokenized_datasets['train'], shuffle=True, batch_size=4)
+eval_dataloader = DataLoader(tokenized_datasets['test'], batch_size=4)
 # %%
 model = AutoModelForSequenceClassification.from_pretrained("savasy/bert-base-turkish-sentiment-cased", num_labels=2)
-
+#%%
 optimizer = AdamW(model.parameters(), lr=5e-5)
 
 num_epochs = 3
@@ -78,4 +78,13 @@ for batch in eval_dataloader:
 metric.compute()
 # %%
 #Using model by loading
-the_model = torch.load("pytorch_finetuned_model")
+the_model = torch.load(".pytorch_finetuned_model")
+
+from transformers import pipeline
+
+tokenizer = AutoTokenizer.from_pretrained("savasy/bert-base-turkish-sentiment-cased")
+sa= pipeline("sentiment-analysis", tokenizer=tokenizer, model=the_model)
+
+p = sa("bu telefon modelleri çok kaliteli , her parçası çok özel bence")
+print(p)
+# %%
