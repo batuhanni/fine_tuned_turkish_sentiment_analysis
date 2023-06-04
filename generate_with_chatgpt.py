@@ -3,8 +3,8 @@ import os
 import openai
 import pandas as pd
 
-openai.organization = "org-XYE9BNmiKKwAzbnK1aRBTmnq"
-openai.api_key = "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"
+openai.organization = "write_yours"
+openai.api_key = "write_yours"
 
 # %%
 df = pd.read_csv(f'.dataset_balanced.csv')
