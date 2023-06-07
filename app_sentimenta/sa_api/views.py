@@ -37,9 +37,9 @@ def train_model(model_for_predict, sentence, label, threelabels=False):
 
     train_dataloader = DataLoader(tokenized_datasets['train'], batch_size=1)
 
-    optimizer = AdamW(model_for_predict.parameters(), lr=5e-3)
+    optimizer = AdamW(model_for_predict.parameters(), lr=0.000025)
 
-    num_epochs = 3
+    num_epochs = 1
     num_training_steps = num_epochs * len(train_dataloader)
 
     lr_scheduler = get_scheduler(
@@ -106,20 +106,14 @@ def index(request):
         if (request.POST.get('feedback') != None) and (result != request.POST.get('feedback')):
             model = train_model(model, sentence, request.POST.get('feedback'), threelabels=3)
             feedback_response = 'Model has been fine-tuned with your feedback.'
+            torch.save(model, 'sa_api\\turkish_finetuned')
         else:
             feedback_response = 'Model has not been feedbacked.'
-        if request.POST.get('update') == 'SAVE':
-            torch.save(model, 'sa_api\\turkish_finetuned')
-            update_response = 'Model has been saved.'
-        else:
-            update_response = 'Model has not been saved.'
     else:
         result = 'Waiting for your sentence...'
         feedback_response = 'Model has not been feedbacked.'
-        update_response = 'Model has not been saved.'
 
     context = {"result": result,
-               "feedback_response": feedback_response,
-               "update_response": update_response}
+               "feedback_response": feedback_response}
     
     return render(request, "index.html", context)

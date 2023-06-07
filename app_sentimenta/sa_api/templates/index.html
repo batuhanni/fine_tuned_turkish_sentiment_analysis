@@ -87,7 +87,19 @@
     <button type="submit">Predict</button>
   </form>
   {% if result %}
-    <div id="result">{{ result }}</div>
+  <div id="result">{{ result }}</div>
+  <script>
+    var result = "{{ result }}";
+    var emoji = "";
+  
+    if (result === "Positive") {
+      emoji = "😄"; // Happy emoji
+    } else if (result === "Negative") {
+      emoji = "😞"; // Sad emoji
+    }
+  
+    document.getElementById("result").innerHTML += emoji;
+  </script>
   {% endif %}
   <form method="post">
     {% csrf_token %}
@@ -97,14 +109,6 @@
   </form>
   {% if feedback_response %}
     <div id="feedback_response">{{ feedback_response }}</div>
-  {% endif %}
-  <form method="post">
-    {% csrf_token %}
-    <p>Save Updated Model</p>
-    <input type="submit" name="update" value="SAVE" class="choice-button"></input>
-  </form>
-  {% if update_response %}
-    <div id="update_response">{{ update_response }}</div>
   {% endif %}
 </body>
 </html>
